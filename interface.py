@@ -54,18 +54,34 @@ def _add_nodes(graph: Digraph, tree: Any, counter: itertools.count) -> str:
 
     if not isinstance(tree, dict):
         # Leaf node
-        graph.node(node_id, label=f"{tree:.3f}")
+        graph.node(
+            node_id,
+            label=f"{tree:.3f}",
+            shape="ellipse",
+            style="filled",
+            fillcolor="#FFECB3",
+            color="#FBC02D",
+        )
         return node_id
 
     question = next(iter(tree))
-    graph.node(node_id, label=question)
+    graph.node(
+        node_id,
+        label=question,
+        shape="box",
+        style="filled,rounded",
+        fillcolor="#BBDEFB",
+        color="#1E88E5",
+    )
+
     yes_branch, no_branch = tree[question]
 
     left_id = _add_nodes(graph, yes_branch, counter)
     right_id = _add_nodes(graph, no_branch, counter)
 
-    graph.edge(node_id, left_id, label="True")
-    graph.edge(node_id, right_id, label="False")
+    graph.edge(node_id, left_id, label="True", color="#2E7D32")
+    graph.edge(node_id, right_id, label="False", color="#C62828")
+
 
     return node_id
 
@@ -83,6 +99,10 @@ def visualise_tree(tree: dict[str, Any], output_path: str) -> None:
     """
 
     g = Digraph(format="png")
+    g.attr("graph", bgcolor="white", rankdir="TB")
+    g.attr("node", fontname="Helvetica")
+    g.attr("edge", fontname="Helvetica")
+
     _add_nodes(g, tree, itertools.count())
     g.render(output_path, view=False, cleanup=True)
 
