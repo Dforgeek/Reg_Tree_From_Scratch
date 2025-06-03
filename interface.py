@@ -73,6 +73,7 @@ def _add_nodes(graph: Digraph, tree: Any, counter: itertools.count) -> str:
         fillcolor="#BBDEFB",
         color="#1E88E5",
     )
+
     yes_branch, no_branch = tree[question]
 
     left_id = _add_nodes(graph, yes_branch, counter)
@@ -80,6 +81,7 @@ def _add_nodes(graph: Digraph, tree: Any, counter: itertools.count) -> str:
 
     graph.edge(node_id, left_id, label="True", color="#2E7D32")
     graph.edge(node_id, right_id, label="False", color="#C62828")
+
 
     return node_id
 
@@ -100,6 +102,7 @@ def visualise_tree(tree: dict[str, Any], output_path: str) -> None:
     g.attr("graph", bgcolor="white", rankdir="TB")
     g.attr("node", fontname="Helvetica")
     g.attr("edge", fontname="Helvetica")
+
     _add_nodes(g, tree, itertools.count())
     g.render(output_path, view=False, cleanup=True)
 
